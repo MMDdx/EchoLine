@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Forms</title>
+    <style>
+        /* Base resets */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { height: 100%; font-family: Arial, sans-serif; background-color: #000; color: #fff; }
+
+        /* Container */
+        .auth-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: relative; /* For positioning notifications */
+        }
+        .auth-box {
+            background: #111;
+            border: 2px solid #00ff88;
+            border-radius: 12px;
+            padding: 2rem;
+            width: 320px;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+            z-index: 1; /* Below notifications */
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #333;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            cursor: pointer;
+            color: #888;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab.active {
+            color: #00ff88;
+            border-color: #00ff88;
+        }
+
+        /* Form fields */
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.3rem; font-size: 0.9rem; }
+        input {
+            width: 100%;
+            padding: 0.6rem;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+        }
+        input:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+
+        /* Button */
+        .btn {
+            width: 100%;
+            padding: 0.7rem;
+            background: #00ff88;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            color: #000;
+        }
+        .btn:hover { background: #00cc6e; }
+
+        /* Toggle link */
+        .toggle-link {
+            display: block;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+            cursor: pointer;
+        }
+        .toggle-link:hover { color: #00ff88; }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(145deg, #1a1a1a, #111);
+            color: #fff;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 10; /* Above auth-box */
+            animation: slideInDown 0.3s ease-out;
+            max-width: 400px;
+            min-width: 250px;
+            opacity: 1;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .notification.success {
+            border: 2px solid #00ff88;
+        }
+
+        .notification.error {
+            border: 2px solid #ff4d4d;
+        }
+
+        .notification .icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .notification.success .icon {
+            background-image: url('/icons/check-circle.svg');
+        }
+
+        .notification.error .icon {
+            background-image: url('/icons/error-circle.svg');
+        }
+
+        .notification .message {
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        .notification .timer-ring {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            pointer-events: none;
+        }
+
+        .notification .timer-ring svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .notification .timer-ring rect {
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            rx: 8;
+            ry: 8;
+        }
+
+        .notification.success .timer-ring rect {
+            stroke: #00ff88;
+            animation: timer 3s linear forwards;
+        }
+
+        .notification.error .timer-ring rect {
+            stroke: #ff4d4d;
+            animation: timer 3s linear forwards;
+        }
+
+        /* Animation for notification appearance */
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* Timer animation */
+        @keyframes timer {
+            from {
+                stroke-dashoffset: 100%;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 770px) {
+            .notification {
+                top: 10px;
+                padding: 0.5rem 0.75rem;
+                max-width: 90%;
+                min-width: 200px;
+                font-size: 0.9rem;
+            }
+
+            .notification .icon {
+                width: 20px;
+                height: 20px;
+            }
+
+            .notification .message {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="auth-container">
+    <div class="auth-box">
+        <div class="tabs">
+            <div id="tab-signin" class="tab active">Sign In</div>
+            <div id="tab-signup" class="tab">Sign Up</div>
+        </div>
+
+        <form id="form-signin">
+            <div class="form-group">
+                <label for="signin-username">Username</label>
+                <input id="signin-username" type="email" required />
+            </div>
+            <div class="form-group">
+                <label for="signin-password">Password</label>
+                <input id="signin-password" type="password" required />
+            </div>
+            <button type="submit" class="btn" id="signin-submit">Sign In</button>
+            <div class="toggle-link" onclick="showSignup()">Don't have an account? Sign Up</div>
+        </form>
+
+        <form id="form-signup" style="display:none;">
+            <div class="form-group">
+                <label for="signup-username">Username</label>
+                <input id="signup-username" type="text" required />
+            </div>
+            <div class="form-group">
+                <label for="signup-email">Email</label>
+                <input id="signup-email" type="text" required />
+            </div>
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input id="signup-password" type="password" required />
+            </div>
+            <div class="form-group">
+                <label for="signup-confirmPassword">Confirm Password</label>
+                <input id="signup-confirmPassword" type="password" required />
+            </div>
+            <button type="submit" class="btn" id="signup-submit">Sign Up</button>
+            <div class="toggle-link" onclick="showSignin()">Already have an account? Sign In</div>
+        </form>
+    </div>
+</div>
+
+<script defer type="module" src="/dist/login.js"></script>
+</body>
+</html>

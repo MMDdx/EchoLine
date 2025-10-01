@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Chat Page</title>
+    <link rel="stylesheet" href="/css/chat.css" />
+</head>
+<body>
+<div class="chat-container" data-curid="<%= user._id %>" data-curusername="<%= user.username %>">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <!-- Header (User Info + Chats Title) -->
+        <div class="sidebar-header">
+            <div class="header-top">
+                <div class="chat-title">Chats</div>
+                <button class="sidebar-close">×</button>
+            </div>
+            <div class="user-info">
+                <img src="/img/users/<%= user.avatar %>" alt="User Avatar" class="user-avatar" />
+                <div class="user-details">
+                    <div class="user-name"><%= user.username %></div>
+                    <div class="user-status">Connecting...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search -->
+
+        <div class="search-bar-container">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
+                </svg>
+                <form action="" onsubmit="return false">
+                <input type="text" id="user-search" placeholder="Search users..." autocomplete="off" name="searchQuery" />
+                </form>
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+
+
+        <!-- Chat List -->
+
+        <div id="chat-list" class="chat-list">
+            <% if (!chats || chats.length === 0) { %>
+                <div>No chats yet!</div>
+            <% } else { %>
+                <% chats.forEach(chat => {
+                    let name, other = null, lastMessage = chat.lastMessage;
+                    if (chat.isGroup) {
+                        name = chat.name;
+                    } else {
+                        other = chat.members.find(p => p._id.toString() !== user._id.toString());
+                    }
+                %>
+                <div class="chat-item"
+                     data-convID="<%= chat._id %>"
+                     <% if (other) { %>data-username="<%= other.username %>" data-userid="<%= other._id %>"<% } %>>
+
+                    <img class="chat-avatar"
+                         src="<%= chat.isGroup
+                                 ? '/img/groups/' + (chat.avatar || 'default-group.jpg')
+                                 : '/img/users/'  + (other.avatar  || 'default.jpg')
+                         %>"
+                         alt="Avatar">
+
+                    <div class="chat-info">
+                        <div class="chat-name"><%= name || other.username %></div>
+
+                        <% if (lastMessage && lastMessage.text) { %>
+                            <div class="chat-last-message" data-message-id="<%= lastMessage.message %>">
+                    <span class="sender" data-user-id="<%= lastMessage.sender %>">
+                      <%= (lastMessage.sender._id.toString() === user._id.toString())? "You" : UsersCache[lastMessage.sender].username %>:
+                    </span>
+                                <span class="text">
+                      <%= lastMessage.text.length > 30
+                              ? lastMessage.text.slice(0, 30) + '…'
+                              : lastMessage.text
+                      %>
+                    </span>
+                            </div>
+                        <% } else { %>
+                            <div class="chat-last-message">No messages yet</div>
+                        <% } %>
+                    </div>
+                </div>
+                <% }); %>
+            <% } %>
+        </div>
+
+        <!-- Floating “+” Button -->
+        <button id="open-group-modal" class="group-fab">+</button>
+    </div>
+
+
+    <!-- end .sidebar -->
+    <div class="sidebar-backdrop"></div>
+    <!-- Main Chat Area -->
+    <div class="chat-main">
+        <button class="sidebar-toggle">☰</button>
+        <div class="messages" id="chat-container">
+
+        </div>
+<!--        <div class="input-area">-->
+<!--            <input type="text" placeholder="Type your message..." id="message" autocomplete="off" />-->
+<!--            <button id="send-message">Send</button>-->
+<!--        </div>-->
+    </div>
+    <!-- end .chat-main -->
+
+</div>
+<!-- end .chat-container -->
+
+<!-- Group Modals -->
+<div id="group-modal" class="group-modal hidden">
+    <div class="group-modal-content">
+        <h3>Select users to create a group</h3>
+        <div id="group-user-list" class="group-user-list"></div>
+        <div class="group-modal-buttons">
+            <button id="cancel-group-btn">✕</button>
+            <button id="create-group-btn">→</button>
+
+        </div>
+    </div>
+</div>
+<div id="group-details-modal" class="group-modal hidden">
+    <div class="group-modal-content">
+        <h3 class="modal-title">Create Group</h3>
+
+        <div class="modal-section">
+            <label for="group-name-input">Group Name</label>
+            <input type="text" id="group-name-input" placeholder="Enter group name" />
+        </div>
+
+        <div class="modal-section avatar-section">
+            <div id="avatar-preview" class="avatar-preview"></div>
+            <label for="group-avatar-input" class="custom-file-label">Choose Group Avatar</label>
+            <input type="file" id="group-avatar-input" accept="image/*" hidden />
+        </div>
+
+        <div class="group-modal-buttons">
+            <button id="cancel-group-details-btn" class="modal-btn cancel">Cancel</button>
+            <button id="final-create-group-btn" class="modal-btn create">Create</button>
+        </div>
+    </div>
+</div>
+
+
+<div id="user-info-modal" class="group-modal hidden">
+    <div class="group-modal-content">
+        <h3 class="modal-title">Edit Profile</h3>
+
+        <!-- Username -->
+        <div class="modal-section">
+            <label for="edit-username">Username</label>
+            <input
+                    type="text"
+                    id="edit-username"
+                    value="<%= user.username %>"
+                    placeholder="Username"
+            />
+        </div>
+
+        <!-- First & Last Name -->
+        <div class="modal-section">
+            <label for="edit-firstname">First Name</label>
+            <input
+                    type="text"
+                    id="edit-firstname"
+                    value="<%= user.firstName || '' %>"
+                    placeholder="First name"
+            />
+        </div>
+        <div class="modal-section">
+            <label for="edit-lastname">Last Name</label>
+            <input
+                    type="text"
+                    id="edit-lastname"
+                    value="<%= user.lastName || '' %>"
+                    placeholder="Last name"
+            />
+        </div>
+
+        <!-- Avatar Picker -->
+        <div class="modal-section avatar-section">
+            <label for="edit-avatar" class="avatar-label">
+                <div class="avatar-circle" id="avatar-preview">
+                    <img
+                            src="/img/users/<%= user.avatar %>"
+                            alt="Avatar"
+                            id="avatar-image"
+                    />
+                    <div class="avatar-overlay">Change</div>
+                </div>
+            </label>
+            <input type="file" id="edit-avatar" accept="image/*" hidden />
+        </div>
+
+        <!-- Change Password -->
+        <div class="modal-section">
+            <label for="current-password">Current Password</label>
+            <input
+                    type="password"
+                    id="current-password"
+                    placeholder="Enter current password"
+            />
+        </div>
+        <div class="modal-section">
+            <label for="new-password">New Password</label>
+            <input
+                    type="password"
+                    id="new-password"
+                    placeholder="Enter new password"
+            />
+        </div>
+        <div class="modal-section">
+            <label for="confirm-password">Confirm New Password</label>
+            <input
+                    type="password"
+                    id="confirm-password"
+                    placeholder="Confirm new password"
+            />
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="group-modal-buttons">
+            <button id="cancel-user-edit-btn" class="modal-btn cancel">Cancel</button>
+            <button id="save-user-edit-btn" class="modal-btn create">Save</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.userCache = <%- JSON.stringify(UsersCache) %>;
+    window.seenBys = <%- JSON.stringify(seenBys) %>;
+</script>
+<script defer type="module" src="/dist/chat.js"></script>
+</body>
+</html>

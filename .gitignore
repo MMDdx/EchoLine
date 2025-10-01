@@ -1,0 +1,4 @@
+.idea
+.parcel-cache
+config.env
+node_modules

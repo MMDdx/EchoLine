@@ -1,0 +1,52 @@
+{
+  "name": "real-time-chat-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "parcel views/src/chat.js views/src/login.js --dist-dir public/dist --no-hmr",
+    "build": "parcel build views/src/chat.js views/src/login.js --dist-dir public/dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "bcrypt": "^5.1.1",
+    "cookie": "^1.0.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "he": "^1.2.0",
+    "html-to-text": "^9.0.5",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.13.2",
+    "multer": "^2.0.1",
+    "nodemailer": "^7.0.6",
+    "nodemon": "^3.1.10",
+    "sharp": "^0.34.2",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "validator": "^13.15.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/socket.io": "^3.0.1",
+    "assert": "^2.1.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.1",
+    "events": "^3.3.0",
+    "morgan": "^1.10.0",
+    "parcel": "^2.15.2",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
+    "querystring-es3": "^0.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.4",
+    "util": "^0.12.5",
+    "vm-browserify": "^1.1.2"
+  }
+}

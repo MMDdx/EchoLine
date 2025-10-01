@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify Your Email</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #0d0d0d;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .verify-container {
+            background: #1a1a1a;
+            border: 1px solid #00ff88;
+            border-radius: 10px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #00ff88;
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        .resend-btn {
+            background: #00ff88;
+            color: #0d0d0d;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s ease-in-out;
+        }
+
+        .resend-btn:hover {
+            background: #00cc6a;
+        }
+
+        .note {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<div class="verify-container">
+    <h1>Hey <%= firstName %>! please Verify Your Email</h1>
+    <p>
+        We’ve sent a verification link to <strong><%= email %></strong>.<br />
+        Please check your inbox and click the link to activate your account.
+    </p>
+
+<!--    <form action="/resend-verification" method="POST">-->
+<!--        <button type="submit" class="resend-btn">Resend Verification Email</button>-->
+<!--    </form>-->
+
+    <p class="note">
+        Didn’t get the email? Check your spam folder or request a new one.
+    </p>
+</div>
+</body>
+</html>
