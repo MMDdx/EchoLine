@@ -577,7 +577,7 @@ const getUserbyUsername = (username) => {
     }
     return null;
 }
-function showNotification(message, type = 'success') {
+export function showNotification(message, type = 'success') {
     // Remove existing notifications
     const existingNotification = chatContainer.querySelector('.notification');
     if (existingNotification) {

@@ -2,6 +2,7 @@ import axios from "axios";
 let token;
 
 import {refreshToken} from "./refreshTok";
+import {showNotification} from "./chat";
 
 const setAccessToken = (body) => {
     sessionStorage.setItem('AccessToken', body.data.AccessToken);
@@ -62,13 +63,13 @@ export function initProfileModal() {
             try {
                 const data = await axios.patch("api/v1/users/updateMe/", formData);
                 if (data.status === 200){
-                    alert("updated successfully!");
+                    showNotification("updated successfully!")
                     setTimeout(()=>{
                         location.reload();
                     }, 2000)
                 }
                 else {
-                    alert("Update failed.");
+                    showNotification("Update failed.", 'error')
                 }
 
             } catch (e) {
@@ -77,13 +78,13 @@ export function initProfileModal() {
                     return saveBtn.click();
                 }
                 console.log(e)
-                alert("error updating profile");
+                showNotification("error updating profile", 'error')
             }
         }
 
         if (newPasswordInput.value && confirmPasswordInput.value) {
             if (curPasswordInput.value){
-                if (newPasswordInput.value !== confirmPasswordInput.value) return alert("passwords do not match!");
+                if (newPasswordInput.value !== confirmPasswordInput.value) return showNotification("passwords do not match!", 'error')
                 try{
                     const res = await axios.patch("api/v1/users/updatePassword", {
                         currentPassword: curPasswordInput.value,
@@ -92,7 +93,7 @@ export function initProfileModal() {
                     })
 
                     if (res.status === 200){
-                        alert("password updated successfully!");
+                        return showNotification("password updated successfully!")
 
                     }
                 }catch (e) {
@@ -100,15 +101,15 @@ export function initProfileModal() {
                         token = await refreshToken()
                         return saveBtn.click();
                     }
-                    console.log(e)
+
                 }
 
             }
             else {
-                return alert("for changing password, you must enter your current password!")
+                return showNotification("for changing password, you must enter your current password!", "error");
             }
         }
-        return alert("nothing was changed!")
+        return showNotification("nothing was changed!", "error")
     }
 
     avatarInput.addEventListener("change", (e) => {
