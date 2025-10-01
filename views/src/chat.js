@@ -59,16 +59,15 @@ socket.on("new message", renderOrUpdateChatItem);
 socket.on("change status", changeUserStatus)
 
 socket.on("user seen update", ({ conversationId, userId, messageId }) => {
-    console.log(conversationId)
+
     if (!seenBys[conversationId]){
-        console.log('didnt exited!')
         seenBys[conversationId] = {}
     }
     seenBys[conversationId][userId] = messageId;
 
     // 1) Ignore updates *you* triggered
     if (userId === currentId) return;
-    console.log("updated!")
+
     // 2) Now mark **all** your outgoing messages up to messageId as read
     const outgoing = Array.from(document.querySelectorAll('.message.you'));
     for (const msgEl of outgoing) {
@@ -87,7 +86,7 @@ socket.on("user seen update", ({ conversationId, userId, messageId }) => {
 socket.on("connect_error", async (err) => {
     console.warn("Socket connection failed:", err.message);
     if (err.message.includes("jwt expired")) {
-        console.log("in if...")
+
         try {
             const newAccessToken = await refreshToken(); // your logic
             socket.auth.token = `Bearer ${newAccessToken}`;
@@ -285,9 +284,9 @@ async function renderOrUpdateChatItem(conversation) {
     }
 
     if (lastMessage) {
-        console.log(lastMessage)
+
         const lastSender = userCache[lastMessage.sender] || {};
-        console.log(lastSender)
+
         senderName = lastSender.username === myUsername ? "You" : lastSender.username;
         const txt = lastMessage.text || "";
         messageText = txt.length > 30 ? txt.slice(0, 30) + "…" : txt;
@@ -356,9 +355,6 @@ async function renderOrUpdateChatItem(conversation) {
         seenBys[convId] = {}
         chatItems = getAllChatItems();
     }
-    console.log(lastMessage.sender)
-    console.log(currentId)
-    console.log(lastMessage.sender !== currentId)
     if (lastMessage.sender !== currentId) markConversationUnread(item);
 }
 
@@ -556,7 +552,6 @@ function markSeenByOthers(conversationId, globalSeenMap = {}) {
 }
 
 function markConversationUnread(item) {
-    console.log('📜📜📜📜📜😊😊😊')
     if (!item.querySelector(".unread-badge")) {
         const badge = document.createElement("span");
         badge.classList.add("unread-badge");
@@ -633,8 +628,6 @@ const fetchChats = async (convID) => {
                 _id:       msg._id
             });
         });
-        console.log(convID)
-        console.log(currentId)
         const lastSeenId = seenBys[convID][currentId];
 
         const allMsgEls = Array.from(chatContainer.querySelectorAll('.message'));
@@ -654,7 +647,6 @@ const fetchChats = async (convID) => {
                             divider.classList.add('new-messages-divider');
                             divider.textContent = 'New messages';
 
-                            console.log(nextEl)
                             nextEl.before(divider);
 
 
@@ -697,7 +689,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll(".chat-item").forEach(item => {
         const convId = item.dataset.convid;
-        console.log('DOMContentLoaded')
+
         const childEl = item.querySelector(".chat-last-message")
         const lastMsgId  = childEl.dataset.messageId;
         const senderId   = childEl.firstElementChild?.dataset.userId
@@ -710,7 +702,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Not yet seen → add badge
             if (!item.querySelector(".unread-badge")) {
                 const badge = document.createElement("span");
-                console.log('badge.classList.add("unread-badge");')
+
                 badge.classList.add("unread-badge");
                 item.append(badge);
             }

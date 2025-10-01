@@ -74,8 +74,6 @@ exports.signUp = catchAsync(async (req, res, next) => {
     try {
         const newUser =  await User.create(user);
     }catch (err){
-        console.log(err.code)
-        console.log("❌❌❌❌")
 
         return next(new appError(err, 400));
     }
@@ -87,8 +85,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
         await new Email(user, urlToken).sendWelcome()
     }
     catch (err){
-        console.log("sending Email failed!❌")
-        console.log(err)
+
     }
     createSendToken(newUser, 201, req,res);
 });
@@ -114,10 +111,8 @@ exports.protect = catchAsync(async (req,res,next)=>{
     let token;
 
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-        console.log("req with auth header!")
         token = req.headers.authorization.split(" ")[1]
     } else {
-        console.log('there is no token!')
         return next(new appError("there is no token!", 401))
     }
 // else if (req.cookies.jwt){
@@ -146,7 +141,6 @@ exports.protectHomePage = catchAsync(async (req, res,next) => {
 
     if (!current_user.active && req.originalUrl !== "/verify-email"){
         req.tempUser = current_user;
-        console.log("sending to verify email")
         return res.redirect('/verify-email');
     }
     // GRANT access to protected Route!

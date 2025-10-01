@@ -63,7 +63,6 @@ module.exports = (err, req, res, next) => {
         else if (err.code === 11000){
             error = handleDuplicateFieldsDB(err)
         }
-        console.log(err)
 
         sendErrorProduction(error,req,res)
     }

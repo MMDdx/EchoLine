@@ -60,7 +60,7 @@ exports.seenMsg = (io, socket) => {
 
     socket.on("seen message", async ({ conversationId, messageId }) => {
         if (!socket.user?._id || !conversationId || !messageId) return;
-        console.log(conversationId, messageId);
+
         try {
             // Atomically set the last‐seen message for this user
             await Conversation.findByIdAndUpdate(conversationId, {
@@ -74,7 +74,7 @@ exports.seenMsg = (io, socket) => {
                 messageId
             });
         } catch (err) {
-            console.error("Error updating seenMap:", err);
+
         }
     });
 }

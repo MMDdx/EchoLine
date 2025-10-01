@@ -1,4 +1,5 @@
 import axios from "axios";
+import {showNotification} from "./chat";
 
 const setAccessToken = (body) => {
     sessionStorage.setItem('AccessToken', body.data.AccessToken);
@@ -14,12 +15,11 @@ export const refreshToken = async () => {
         accessToken = await axios.get(`/api/v1/users/refresh`);
     }
     catch (e){
-        console.log('failed to refresh!!')
-        alert("please login again!")
+        showNotification("please login again!", "error")
         location.replace("/");
         return
     }
-    console.log("getting access token...")
+
     setAccessToken(await accessToken);
 
     axios.defaults.headers.common['authorization'] = `Bearer ${getAccessToken()}`;

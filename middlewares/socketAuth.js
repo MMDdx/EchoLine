@@ -19,7 +19,7 @@ module.exports = async (socket, next) => {
             decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
         }
         catch (e){
-            console.log(e)
+
             if (String(e).includes("jwt expired")){
                 return next(new AppError("jwt expired!!", 401));
             }

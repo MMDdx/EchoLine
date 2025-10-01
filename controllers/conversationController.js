@@ -29,9 +29,9 @@ exports.createConversation =catchAsync(async (req, res, next) => {
         senderUsername: req.body.lastMessage.myUsername,
         timestamp: Date.now(),
     };
-    console.log(ConvArgs)
+
     const newConv = await Conversation.create(ConvArgs);
-    console.log(newConv)
+
     req.body.members.forEach(el => {
         io.to(`user_${el}`).emit("new conversation", newConv)
     })

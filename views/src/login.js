@@ -89,11 +89,9 @@ signup_submit.onclick = async (e) =>{
 
     }
     else {
-        console.log(resJSON)
         showNotification(resJSON.message, "error");
     }
 
-    console.log(res)
 }
 signin_submit.onclick = async (e) =>{
     e.preventDefault();

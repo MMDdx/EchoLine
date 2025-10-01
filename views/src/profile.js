@@ -77,7 +77,7 @@ export function initProfileModal() {
                     token = await refreshToken()
                     return saveBtn.click();
                 }
-                console.log(e)
+
                 showNotification("error updating profile", 'error')
             }
         }
