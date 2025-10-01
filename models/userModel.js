@@ -21,11 +21,10 @@ const userSchema = new mongoose.Schema({
     },
     firstName:{
         type: String,
-        default: "new"
+        default: "new User"
     },
     lastName:{
         type: String,
-        default: "User"
     },
     joinedAt:{
         type: Date,
