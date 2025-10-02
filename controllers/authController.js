@@ -71,10 +71,10 @@ exports.signUp = catchAsync(async (req, res, next) => {
         password: req.body.password,
         confirmPassword: req.body.confirmPassword,
     }
+    let newUser;
     try {
-        const newUser =  await User.create(user);
+        newUser =  await User.create(user);
     }catch (err){
-
         return next(new appError(err, 400));
     }
 
@@ -85,7 +85,9 @@ exports.signUp = catchAsync(async (req, res, next) => {
         await new Email(user, urlToken).sendWelcome()
     }
     catch (err){
-
+        err.code = 1111
+        await User.deleteOne(newUser._id)
+        return next(new appError(err, 500))
     }
     createSendToken(newUser, 201, req,res);
 });

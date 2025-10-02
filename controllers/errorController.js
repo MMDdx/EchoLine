@@ -13,6 +13,10 @@ const handleDuplicateFieldsDB = err =>{
     return new AppError(message, 400)
 }
 
+const handleEmailSendingError = err => {
+    const message = "Something went Wrong during sending email to you!please sign up again later!"
+    return new AppError(message, 500)
+}
 
 const sendErrorDev = (err,req, res) => {
     if (req.originalUrl.startsWith("/api")){
@@ -63,7 +67,9 @@ module.exports = (err, req, res, next) => {
         else if (err.code === 11000){
             error = handleDuplicateFieldsDB(err)
         }
-
+        else if (err.code === 1111){
+            error = handleEmailSendingError(err)
+        }
         sendErrorProduction(error,req,res)
     }
 
