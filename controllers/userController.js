@@ -3,13 +3,19 @@ const catchAsync = require('../utils/catchAsync');
 
 exports.searchUsers = catchAsync(async (req, res, next) => {
     const query = req.query.query;
-
+    const current_user = req.user;
     if (!query && query.trim() === "") {
         return res.status(400).json([])
     }
     const users = await User.find({username: {$regex: query, $options : 'i'}})
         .limit(10)
         .select("username _id avatar")
+
+    users.forEach(user => {
+        if (user._id.toString() === current_user._id.toString()) {
+            users.splice(users.indexOf(user), 1)
+        }
+    })
 
     return res.status(200).json(users);
 })
