@@ -48,7 +48,10 @@
 
         <div id="chat-list" class="chat-list">
             <% if (!chats || chats.length === 0) { %>
-                <div>No chats yet!</div>
+                <div class="no-chats-message">
+                    <img src="/icons/empty-mailbox.png" alt="No chats icon" class="no-chats-icon">
+                    No chats yet!
+                </div>
             <% } else { %>
                 <% chats.forEach(chat => {
                     let name, other = null, lastMessage = chat.lastMessage;

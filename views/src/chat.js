@@ -225,7 +225,7 @@ const insertAnoncement = (message, typ) => {
     let div = document.createElement("div");
     div.classList.add(typ);
     div.textContent = message;
-
+    div.innerHTML = `<img src="/icons/welcome-to-chat.png" alt="Chat Icon" class="welcome-icon">${message}`
     chatContainer.appendChild(div);
     return div
 }
