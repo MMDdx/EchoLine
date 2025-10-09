@@ -726,7 +726,7 @@ const closeSidebar = () => {
 
 
 // executing...
-welcome_message = insertAnoncement("Welcome To The Chat!", "welcome-message");
+welcome_message = insertAnoncement("Welcome To EchoLine!", "welcome-message");
 currentId = document.querySelector('.chat-container').dataset.curid;
 myUsername = document.querySelector('.chat-container').dataset.curusername;
 

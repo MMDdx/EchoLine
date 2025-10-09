@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Chat Page</title>
     <link rel="stylesheet" href="/css/chat.css" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjAgMjAgSDgwIEExMCAxMCAwIDAgMSA5MCAzMCBWNjAgQTEwIDEwIDAgMCAxIDgwIDcwIEg0MCBMMzAgODAgVjcwIEgyMCBBMTAgMTAgMCAwIDEgMTAgNjAgVjMwIEExMCAxMCAwIDAgMSAyMCAyMCIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMCAzNSBRNDAgMzAgNTAgMzUgVDcwIDM1IiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTMwIDQ1IFE0MCA0MCA1MCA0NSBUNzAgNDUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzAgNTUgUTQwIDUwIDUwIDU1IFQ3MCA1NSIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
+    <!-- Apple Touch Icon (180x180 PNG for iOS) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/echoline-icon-180.png">
+    <!-- Favicon PNG (64x64 for broader compatibility) -->
+    <link rel="icon" type="image/png" sizes="64x64" href="/icons/echoline-icon-64.png">
 </head>
 <body>
 <div class="chat-container" data-curid="<%= user._id %>" data-curusername="<%= user.username %>">
@@ -15,8 +20,15 @@
         <!-- Header (User Info + Chats Title) -->
         <div class="sidebar-header">
             <div class="header-top">
-                <div class="chat-title">Chats</div>
-                <button class="sidebar-close">×</button>
+                <svg class="echoline-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 20 H80 A10 10 0 0 1 90 30 V60 A10 10 0 0 1 80 70 H40 L30 80 V70 H20 A10 10 0 0 1 10 60 V30 A10 10 0 0 1 20 20"
+                          stroke="#00ff88" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M30 35 Q40 30 50 35 T70 35" stroke="#00ff88" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M30 45 Q40 40 50 45 T70 45" stroke="#00ff88" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M30 55 Q40 50 50 55 T70 55" stroke="#00ff88" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+                <div class="chat-title">EchoLine</div>
+                <button class="sidebar-close hidden">×</button>
             </div>
             <div class="user-info">
                 <img src="/img/users/<%= user.avatar %>" alt="User Avatar" class="user-avatar" />
@@ -107,7 +119,7 @@
     <div class="chat-main">
         <button class="sidebar-toggle">☰</button>
         <div class="messages" id="chat-container">
-
+            <div class="footer-text">EchoLine created by Mohammad Kabiri</div>
         </div>
 <!--        <div class="input-area">-->
 <!--            <input type="text" placeholder="Type your message..." id="message" autocomplete="off" />-->
