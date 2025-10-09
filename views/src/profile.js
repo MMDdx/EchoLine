@@ -67,9 +67,10 @@ export function initProfileModal() {
                     setTimeout(()=>{
                         location.reload();
                     }, 2000)
+                    return
                 }
                 else {
-                    showNotification("Update failed.", 'error')
+                    return showNotification("Update failed.", 'error')
                 }
 
             } catch (e) {
