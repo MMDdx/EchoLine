@@ -7,7 +7,8 @@ const app = express();
 const server = http.createServer(app)
 const socketAuth = require("./middlewares/socketAuth");
 const conversationRouter = require("./routes/conversationRoutes")
-
+const cors = require('cors');
+const helmet = require('helmet');
 const io = init(server);
 
 process.on("uncaughtException", err => {
@@ -15,6 +16,13 @@ process.on("uncaughtException", err => {
     console.error(err.stack);
     process.exit(1);
 });
+
+app.use(helmet({contentSecurityPolicy: false}))
+// implement CORS
+app.use(cors())
+// access Control Allow Origin
+app.options(/.*/, cors())
+
 
 const viewsRouter = require("./routes/viewsRoutes");
 const morgan = require("morgan");
