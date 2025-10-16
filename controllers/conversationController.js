@@ -1,7 +1,7 @@
 const catchAsync = require("./../utils/catchAsync");
 const Conversation = require("./../models/conversationModel")
 const { getIO } = require("./../socket.js");
-const AppError = require("./../utils/AppError");
+const AppError = require("./../utils/appError");
 const he = require("he")
 
 exports.createConversation =catchAsync(async (req, res, next) => {

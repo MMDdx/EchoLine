@@ -1,6 +1,6 @@
 const Message = require("./../models/messageModel");
 const catchAsync = require("./../utils/catchAsync");
-const AppError = require("./../utils/AppError");
+const AppError = require("./../utils/appError");
 
 exports.getMessages = catchAsync(async (req, res, next) => {
     let convID = req.params.convID;
