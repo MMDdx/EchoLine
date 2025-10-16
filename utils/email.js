@@ -16,10 +16,17 @@ class Email {
             return nodeMailer.createTransport({
                 host: process.env.EMAIL_HOST,
                 port: process.env.EMAIL_PORT,
+                secure: true,
                 auth: {
                     user: process.env.EMAIL_USERNAME,
                     pass: process.env.EMAIL_MAILTRAP_PASSWORD
-                }
+                },
+                tls: {
+                    rejectUnauthorized: false,
+                    minVersion: 'TLSv1.2'
+                },
+                ignoreTLS: false,
+                requireTLS: true,
             });
         }
         else if (process.env.NODE_ENV === "production") {
