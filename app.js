@@ -25,7 +25,7 @@ app.options(/.*/, cors())
 
 
 const viewsRouter = require("./routes/viewsRoutes");
-const morgan = require("morgan");
+// const morgan = require("morgan");
 const userRouter = require("./routes/userRoutes");
 const messageRouter = require("./routes/messageRoutes");
 const globalErrorHandler = require("./controllers/errorController");
@@ -54,9 +54,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({limit: "10kb"}));
 app.use(express.urlencoded({extended: true, limit: '10kb'}));
 app.use(cookieParser());
-if (process.env.NODE_ENV === "development") {
-    app.use(morgan("dev"));
-}
+// if (process.env.NODE_ENV === "development") {
+//     app.use(morgan("dev"));
+// }
 
 // routes
 app.use("/", viewsRouter);
