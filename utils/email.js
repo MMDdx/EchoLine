@@ -31,16 +31,11 @@ class Email {
         }
         else if (process.env.NODE_ENV === "production") {
             return nodeMailer.createTransport({
-                host: 'smtp.mail.yahoo.com',
-                port: 465, // Yahoo prefers SSL
-                secure: true, // Use SSL for port 465
+                service: "gmail",
                 auth: {
-                    user: process.env.YAHOO_EMAIL,
-                    pass: process.env.YAHOO_APP_PASSWORD
-                },
-                tls: { minVersion: 'TLSv1.2' }, // Ensure modern TLS
-                logger: true, // Debug logs
-                debug: true
+                    user: "void.dev92@gmail.com",
+                    pass: process.env.APP_PASSWORD, // not your main password
+                }
             });
             // return new MailerSend({ apiKey: process.env.MAILERSEND_API_KEY })
 
