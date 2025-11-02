@@ -49,6 +49,15 @@ class Email {
     }
 
     async send(template, subject){
+        const transporter = this.newTransport();
+
+        transporter.verify((error, success) => {
+            if (error) {
+                console.error("SMTP connection error:", error);
+            } else {
+                console.log("SMTP server is ready to send messages");
+            }
+        });
         const html = await ejs.renderFile(`${__dirname}/../views/email/${template}.ejs`, {
             name: this.firstName,
             url: this.url,
