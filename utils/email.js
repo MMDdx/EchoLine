@@ -33,7 +33,7 @@ class Email {
             return nodeMailer.createTransport({
                 service: "gmail",
                 auth: {
-                    user: "void.dev92@gmail.com",
+                    user: process.env.EMAIL_FROM,
                     pass: process.env.APP_PASSWORD, // not your main password
                 }
             });
