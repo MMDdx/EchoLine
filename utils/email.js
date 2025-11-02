@@ -32,7 +32,7 @@ class Email {
         else if (process.env.NODE_ENV === "production") {
             return nodeMailer.createTransport({
                 host: "smtp.gmail.com",
-                port: 465,
+                port: 587,
                 secure: true, // SSL
                 auth: {
                     user: process.env.EMAIL_FROM,
