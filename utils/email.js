@@ -31,13 +31,16 @@ class Email {
         }
         else if (process.env.NODE_ENV === "production") {
             return nodeMailer.createTransport({
-                service: "gmail",
+                host: "smtp.gmail.com",
                 port: 465,
-                secure: true,
+                secure: true, // SSL
                 auth: {
                     user: process.env.EMAIL_FROM,
-                    pass: process.env.APP_PASSWORD, // not your main password
-                }
+                    pass: process.env.APP_PASSWORD, // app password
+                },
+                tls: {
+                    rejectUnauthorized: false,
+                },
             });
             // return new MailerSend({ apiKey: process.env.MAILERSEND_API_KEY })
 
