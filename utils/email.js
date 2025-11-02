@@ -32,6 +32,8 @@ class Email {
         else if (process.env.NODE_ENV === "production") {
             return nodeMailer.createTransport({
                 service: "gmail",
+                port: 465,
+                secure: true,
                 auth: {
                     user: process.env.EMAIL_FROM,
                     pass: process.env.APP_PASSWORD, // not your main password
